@@ -51,7 +51,7 @@ export class DiabloApiService {
     if (res.status < 200 || res.status >= 300) {
       throw new Error('Bad response status: ' + res.status);
     }
-    console.log(res, res.json());
+    
     let body = res.json();
     return body || { };
   }
