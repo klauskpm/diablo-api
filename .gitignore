@@ -1,6 +1,7 @@
 node_modules
 typings
 *.js
-!*.config.js
+*.config.*
 *.map
 .vscode
+!sample.*.ts
