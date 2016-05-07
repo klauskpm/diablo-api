@@ -28,23 +28,23 @@ export class DiabloApiService {
     if (typeof locale !== 'string')
       throw 'Locale must be a string';
     
-    return this.get(`${this.baseUrl}profile/${battleTag}/?locale=${locale}`);
+    return this.get(`profile/${battleTag}/?locale=${locale}`);
   }
   
   private get(url: string): Promise<any[]> {
-    url = this.applyApiKey(url);
     
-    return this.http.get(url)
+    return this.http.get(`${this.baseUrl + url + this.getApiKeyQuery(url)}`)
                     .toPromise()
                     .then(this.extractData)
                     .catch(this.handleError);
   }
   
-  private applyApiKey(url: string): string {
-    if (url.indexOf(this.apikey) > -1)
-      return url;
+  private getApiKeyQuery(url: string): string {
+    var query = '?';
+    if (url.indexOf(query) > -1)
+      query = '&';
       
-    return url += '&apikey=' + this.apikey;
+    return `${query}apikey=${this.apikey}`;
   }
   
   private extractData(res: Response) {
