@@ -11,7 +11,7 @@ export class DiabloApiService extends ApiService {
   private baseUrl : string;
   private apikey : string;
   
-  constructor(private http: Http) {
+  constructor(protected http: Http) {
     super(http);
     this.baseUrl = config.baseUrl;
     this.apikey = config.apikey;

@@ -7,7 +7,7 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class ApiService {
-  constructor(private http: Http) {
+  constructor(protected http: Http) {
     this.http = http;
   }
   
