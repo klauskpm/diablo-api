@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 
-import { Http, Response } from '@angular/http';
-
-import {Observable} from 'rxjs/Rx';
-import 'rxjs/Rx';
+import { Http } from '@angular/http';
 
 import { config } from './../config/diablo-api.config';
 
+import { ApiService } from './api.service';
 
 @Injectable()
-export class DiabloApiService {
+export class DiabloApiService extends ApiService {
   private baseUrl : string;
   private apikey : string;
   
   constructor(private http: Http) {
+    super(http);
     this.baseUrl = config.baseUrl;
     this.apikey = config.apikey;
   }
@@ -28,38 +27,16 @@ export class DiabloApiService {
     if (typeof locale !== 'string')
       throw 'Locale must be a string';
     
-    return this.get(`profile/${battleTag}/?locale=${locale}`);
+    return this.get(`profile/${battleTag}/`, { locale: locale });
   }
   
-  private get(url: string): Promise<any[]> {
+  public get(path: string, params: Object): Promise<any[]> {
+    var defaultParams = {
+      apikey: this.apikey
+    };
     
-    return this.http.get(`${this.baseUrl + url + this.getApiKeyQuery(url)}`)
-                    .toPromise()
-                    .then(this.extractData)
-                    .catch(this.handleError);
-  }
-  
-  private getApiKeyQuery(url: string): string {
-    var query = '?';
-    if (url.indexOf(query) > -1)
-      query = '&';
-      
-    return `${query}apikey=${this.apikey}`;
-  }
-  
-  private extractData(res: Response) {
-    if (res.status < 200 || res.status >= 300) {
-      throw new Error('Bad response status: ' + res.status);
-    }
+    params = Object.assign(defaultParams, params);
     
-    let body = res.json();
-    return body || { };
-  }
-  
-  private handleError (error: any) {
-    // In a real world app, we might send the error to remote logging infrastructure
-    let errMsg = error.message || 'Server error';
-    console.error(errMsg); // log to console instead
-    return Observable.throw(errMsg);
+    return ApiService.prototype.get.call(this, `${this.baseUrl + path}`, params);
   }
 }
