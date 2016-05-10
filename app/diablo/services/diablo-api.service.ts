@@ -6,6 +6,8 @@ import { config } from './../config/diablo-api.config';
 
 import { ApiService } from './api.service';
 
+import { battleTagValidator } from './../validators/battle-tag.validator';
+
 @Injectable()
 export class DiabloApiService extends ApiService {
   private baseUrl : string;
@@ -18,12 +20,8 @@ export class DiabloApiService extends ApiService {
   }
   
   public getCareerProfile(battleTag: string, locale: string = 'en_US') {
-    if (!battleTag)
-      throw 'BattleTag must be defined.';
-      
-    if (typeof battleTag !== 'string')
-      throw 'BattleTag must be a string';
-      
+    battleTagValidator.validate(battleTag);
+    
     if (typeof locale !== 'string')
       throw 'Locale must be a string';
     
