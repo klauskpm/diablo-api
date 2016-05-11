@@ -19,7 +19,12 @@ export class DiabloApiService extends ApiService {
     this.apikey = config.apikey;
   }
   
-  public getCareerProfile(battleTag: string, locale: string) {
+  public init(country: string, locale: string) {
+    this.localeService.setCountry(country);
+    this.localeService.setLocale(locale);
+  }
+  
+  public getCareerProfile(battleTag: string, locale: string | any = false) {
     battleTagValidator.validate(battleTag);
     
     if (locale)
