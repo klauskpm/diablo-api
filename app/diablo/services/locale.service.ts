@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
-import { locales, countryInterface } from './../models/locale';
+import { locales } from './../mock-locale';
 import { config } from './../config/diablo-api.config';
+import { localeValidator } from './../validators/locale.validator';
+
+export interface countryInterface {
+  url: string,
+  locales: Object
+}
 
 @Injectable()
 export class LocaleService {

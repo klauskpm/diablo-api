@@ -1,8 +1,3 @@
-export interface countryInterface {
-  url: string,
-  locales: Object
-}
-
 export var locales = {
   "EU": {
     "url": "eu",
