@@ -12,11 +12,9 @@ export class DiabloApiService extends ApiService {
   private apikey : string;
   private localeService : LocaleService;
   
-  constructor(
-    protected http: Http,
-    @Inject(LocaleService) localeService) {
+  constructor(protected http: Http) {
     super(http);
-    this.localeService = localeService;
+    this.localeService = new LocaleService();
     this.baseUrl = config.baseUrl;
     this.apikey = config.apikey;
   }
