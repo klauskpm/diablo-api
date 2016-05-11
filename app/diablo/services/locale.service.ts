@@ -21,6 +21,8 @@ export class LocaleService {
   }
   
   public setLocale(locale: string) {
+    localeValidator.validate(locale);
+    
     if (!this.isLocaleValid(locale))
       throw `The ${locale} does not belongs to ${this.getCountry()}`;
       
