@@ -26,6 +26,6 @@ export function isEmpty(value) {
   return false;
 }
 
-export interface baseValidator {
+export interface baseValidatorInterface {
   validate: Function
 }

@@ -1,6 +1,6 @@
-import { isString, isEmpty, baseValidator } from './base.validator';
+import { isString, isEmpty, baseValidatorInterface } from './base.validator';
 
-export var battleTagValidator: baseValidator = {
+export var battleTagValidator: baseValidatorInterface = {
   validate: function(battleTag: string) : boolean {
     if (isEmpty(battleTag))
       throw "BattleTag is required";

@@ -1,6 +1,6 @@
-import { isString, baseValidator } from './base.validator';
+import { isString, baseValidatorInterface } from './base.validator';
 
-export var localeValidator: baseValidator = {
+export var localeValidator: baseValidatorInterface = {
   validate: function(value) {
     if (!isString(value))
       throw "Locale must be a string";
