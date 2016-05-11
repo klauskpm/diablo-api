@@ -1,0 +1,8 @@
+<div *ngIf="profile">
+  <h2>Profile's heroes:</h2>
+  <ul>
+    <li *ngFor="let hero of profile.heroes">
+      <p><b>Name:</b> {{hero.name}}</p>
+    </li>
+  </ul>
+</div>

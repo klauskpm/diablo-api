@@ -1,0 +1,6 @@
+<h1>Diablo API</h1>
+
+<input type="text" [(ngModel)]="battleTag" placeholder="Ex: Noob-1234">
+<button (click)="getProfile(battleTag)">Search</button>
+
+<profile [profile]="profile"></profile>
