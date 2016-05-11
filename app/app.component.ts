@@ -6,13 +6,15 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/Rx';
 
 import { DiabloApiService } from './diablo/services/diablo-api.service';
+import { LocaleService } from './diablo/services/locale.service';
 
 @Component({
   selector: 'my-app',
   template: '<h1>Diablo API</h1>',
   providers: [
     HTTP_PROVIDERS,
-    DiabloApiService
+    DiabloApiService,
+    LocaleService
   ]
 })
 export class AppComponent implements OnInit {

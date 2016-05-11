@@ -1,4 +1,6 @@
 export var config = {
   apikey: 'your-api-key',
-  baseUrl: 'https://battle.net-api-url/'
+  baseUrl: 'battle.net-api-url/',
+  defaultCountry: 'US',
+  defaultLocale: 'en_US'
 };
