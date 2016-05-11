@@ -30,14 +30,6 @@ export class DiabloApiService extends ApiService {
     return this.get(`profile/${battleTag}/`, { locale: this.localeService.getLocale() });
   }
   
-  public setCountry(country: string) {
-    this.localeService.setCountry(country);
-  }
-  
-  public setLocale(locale: string) {
-    this.localeService.setLocale(locale);
-  }
-  
   public get(path: string, params: Object): Promise<any[]> {
     let defaultParams = {
       apikey: this.apikey
