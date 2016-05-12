@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Jsonp } from '@angular/http';
 
 import { config } from './../config/diablo-api.config';
 import { ApiService } from './api.service';
@@ -12,8 +12,8 @@ export class DiabloApiService extends ApiService {
   private apikey : string;
   private localeService : LocaleService;
   
-  constructor(protected http: Http) {
-    super(http);
+  constructor(protected http: Http, protected jsonp: Jsonp) {
+    super(http, jsonp);
     this.localeService = new LocaleService();
     this.baseUrl = config.baseUrl;
     this.apikey = config.apikey;
@@ -46,18 +46,19 @@ export class DiabloApiService extends ApiService {
     };
     
     battleTagValidator.validate(battleTag);
+    let url = `profile/${battleTag}/`;
     
     if (locale) {
       this.localeService.setLocale(locale);
       params.locale = this.localeService.getLocale();
     }
     
-    if (callback)
+    if (callback) {
       params.callback = callback;
-    
-    console.log(params);
-    
-    return this.get(`profile/${battleTag}/`, params);
+      return this.getJsonp(url, params);
+    } else {
+      return this.get(url, params);
+    }
   }
   
   /**
@@ -71,7 +72,19 @@ export class DiabloApiService extends ApiService {
    * 
    * return {Promise}
    */
-  public get(path: string, params: Object): Promise<any[]> {
+  public get(path: string, params: Object) : Promise<any[]> {
+    let prepared = this.prepareRequest(path, params);
+    
+    return ApiService.prototype.get.call(this, prepared.apiUrl, prepared.params);
+  }
+  
+  public getJsonp(path: string, params: Object) : Promise<any[]> {
+    let prepared = this.prepareRequest(path, params);
+    
+    return ApiService.prototype.getJsonp.call(this, prepared.apiUrl, prepared.params);
+  }
+  
+  protected prepareRequest(path: string, params: Object) : {params: any, apiUrl: string} {
     let defaultParams = {
       apikey: this.apikey
     };
@@ -80,6 +93,9 @@ export class DiabloApiService extends ApiService {
     
     let apiUrl = `https://${this.localeService.getCountry()}.${this.baseUrl + path}`;
     
-    return ApiService.prototype.get.call(this, apiUrl, params);
+    return {
+      params: params,
+      apiUrl: apiUrl
+    };
   }
 }

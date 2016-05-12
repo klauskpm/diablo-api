@@ -1,6 +1,6 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 
-import { Http, Response, HTTP_PROVIDERS } from '@angular/http';
+import { Http, Response, HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
 
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/Rx';
@@ -14,6 +14,7 @@ import { ProfileComponent } from './components/profile/profile.component';
   templateUrl: './app/app.component.html',
   providers: [
     HTTP_PROVIDERS,
+    JSONP_PROVIDERS,
     DiabloApiService
   ],
   directives: [ProfileComponent]
@@ -36,12 +37,7 @@ export class AppComponent implements OnInit {
     this.diabloApiService.getCareerProfile(battleTag)
       .then(
         (res : Response | any) => {
-          // If using a callback for a JSONP response
-          // use this commented line instead of res.json()
-          // let response = res;
-          let response = res.json();
-          console.log(response);
-          this.profile = response;
+          this.profile = res;
         },
         error => {
           this.errorMessage = <any>error;

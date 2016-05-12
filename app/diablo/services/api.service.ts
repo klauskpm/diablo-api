@@ -1,18 +1,26 @@
 import { Injectable } from '@angular/core';
 
-import { Http, Response } from '@angular/http';
+import { Http, Response, Jsonp } from '@angular/http';
 
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/Rx';
 
 @Injectable()
 export class ApiService {
-  constructor(protected http: Http) {
+  constructor(protected http: Http, protected jsonp: Jsonp) {
     this.http = http;
+    this.jsonp = jsonp;
   }
   
   public get(url: string, params: Object): Promise<any[]> {
     return this.http.get(`${url + this.prepareQueryString(params)}`)
+                    .toPromise()
+                    .then(this.extractData)
+                    .catch(this.handleError);
+  }
+  
+  public getJsonp(url: string, params: Object): Promise<any[]> {
+    return this.jsonp.request(`${url + this.prepareQueryString(params)}`)
                     .toPromise()
                     .then(this.extractData)
                     .catch(this.handleError);
@@ -35,7 +43,7 @@ export class ApiService {
       throw new Error('Bad response status: ' + res.status);
     }
     
-    let body = res;
+    let body = res.json();
     return body || { };
   }
   
