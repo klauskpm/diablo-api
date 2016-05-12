@@ -25,12 +25,24 @@ export class DiabloApiService extends ApiService {
   }
   
   public getCareerProfile(battleTag: string, locale: string | any = false) {
+  public getCareerProfile(battleTag: string, locale?: string, callback?: string) {
+    let params : {locale: string, callback?: string} = {
+      locale: this.localeService.getLocale()
+    };
+    
     battleTagValidator.validate(battleTag);
     
-    if (locale)
+    if (locale) {
       this.localeService.setLocale(locale);
+      params.locale = this.localeService.getLocale();
+    }
     
-    return this.get(`profile/${battleTag}/`, { locale: this.localeService.getLocale() });
+    if (callback)
+      params.callback = callback;
+    
+    console.log(params);
+    
+    return this.get(`profile/${battleTag}/`, params);
   }
   
   public get(path: string, params: Object): Promise<any[]> {

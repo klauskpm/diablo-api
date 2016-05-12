@@ -35,7 +35,7 @@ export class ApiService {
       throw new Error('Bad response status: ' + res.status);
     }
     
-    let body = res.json();
+    let body = res;
     return body || { };
   }
   

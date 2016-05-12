@@ -35,9 +35,13 @@ export class AppComponent implements OnInit {
     this.profile = null;
     this.diabloApiService.getCareerProfile(battleTag)
       .then(
-        res => {
-          console.log(res);
-          this.profile = res;
+        (res : Response | any) => {
+          // If using a callback for a JSONP response
+          // use this commented line instead of res.json()
+          // let response = res;
+          let response = res.json();
+          console.log(response);
+          this.profile = response;
         },
         error => {
           this.errorMessage = <any>error;
