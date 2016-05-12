@@ -19,12 +19,27 @@ export class DiabloApiService extends ApiService {
     this.apikey = config.apikey;
   }
   
-  public init(country: string, locale: string) {
+  /**
+   * Settup the country and the locale for future requests
+   * 
+   * @param {String} country A 2 letters uppercase country acronym (ie. US)
+   * @param {String} locale What locale to use in future responses
+   * (ie. pt_BR, en_US)
+   */
+  public init(country: string, locale: string) : void {
     this.localeService.setCountry(country);
     this.localeService.setLocale(locale);
   }
   
-  public getCareerProfile(battleTag: string, locale: string | any = false) {
+  /**
+   * Returns the career profile of a Battle Tag
+   * 
+   * @param {String} battleTag Battle Tag in name-#### format (ie. Noob-1234)
+   * @param {String=} locale What locale to use in the response (ie. en_US)
+   * @param {String=} callback Request data to be returned as a JsonP callback
+   * 
+   * @return {Promise}
+   */
   public getCareerProfile(battleTag: string, locale?: string, callback?: string) {
     let params : {locale: string, callback?: string} = {
       locale: this.localeService.getLocale()
@@ -45,6 +60,17 @@ export class DiabloApiService extends ApiService {
     return this.get(`profile/${battleTag}/`, params);
   }
   
+  /**
+   * Sends a GET request
+   * 
+   * This is the default GET request that uses the country - setted in init -
+   * and expects a path and the respective params to be given.
+   * 
+   * @param {String} path
+   * @param {Object} params
+   * 
+   * return {Promise}
+   */
   public get(path: string, params: Object): Promise<any[]> {
     let defaultParams = {
       apikey: this.apikey
