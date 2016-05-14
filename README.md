@@ -17,5 +17,5 @@ which you don't have to mind looking at.
 If you look inside the root folder(the foolder you cloned this repository) you will find a configuration file inside `/app/diablo/config/`.
 You can copy it, for backup of the original config, or just remove the **sample.** from the file and set the variables.
 
-Since their API is not something so open, I find it would be a pain to give the information about their API url, but,
+Since their API is not fully open, I find it would be a pain to give the information about their API url, but,
 anyone with access to it can use this repository.
