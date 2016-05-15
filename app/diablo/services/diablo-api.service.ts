@@ -5,18 +5,21 @@ import { config } from './../config/diablo-api.config';
 import { ApiService } from './api.service';
 import { battleTagValidator } from './../validators/battle-tag.validator';
 import { LocaleService } from './locale.service';
+import { RouterService } from './router.service';
 
 @Injectable()
 export class DiabloApiService extends ApiService {
   private baseUrl : string;
   private apikey : string;
   private localeService : LocaleService;
+  private router : RouterService;
   
   constructor(protected http: Http, protected jsonp: Jsonp) {
     super(http, jsonp);
     this.localeService = new LocaleService();
     this.baseUrl = config.baseUrl;
     this.apikey = config.apikey;
+    this.router = new RouterService();
   }
   
   /**
@@ -46,7 +49,7 @@ export class DiabloApiService extends ApiService {
     };
     
     battleTagValidator.validate(battleTag);
-    let url = `profile/${battleTag}/`;
+    let url = this.router.get('CareerProfile', [{battleTag: battleTag}]);
     
     if (locale) {
       this.localeService.setLocale(locale);
