@@ -4,6 +4,7 @@ import { Http, Jsonp } from '@angular/http';
 import { config } from './../config/diablo-api.config';
 import { ApiService } from './api.service';
 import { battleTagValidator } from './../validators/battle-tag.validator';
+import { heroIdValidator } from './../validators/hero-id.validator';
 import { LocaleService } from './locale.service';
 import { RouterService } from './router.service';
 
@@ -35,7 +36,10 @@ export class DiabloApiService extends ApiService {
   }
   
   /**
-   * Returns the career profile of a Battle Tag
+   * Returns the career profile
+   * 
+   * Based on the BattleTag and the region(ie. US) it returns the career
+   * profile 
    * 
    * @param {String} battleTag Battle Tag in name-#### format (ie. Noob-1234)
    * @param {String=} locale What locale to use in the response (ie. en_US)
@@ -49,7 +53,29 @@ export class DiabloApiService extends ApiService {
     };
     
     battleTagValidator.validate(battleTag);
-    let url = this.router.get('CareerProfile', [{battleTag: battleTag}]);
+    
+    let url = this.router.get('CareerProfile', [{"battleTag": battleTag}]);
+    
+    if (locale) {
+      this.localeService.setLocale(locale);
+      params.locale = this.localeService.getLocale();
+    }
+    
+    return this.request(url, params, callback);
+  }
+  
+  public getHeroProfile(battleTag: string, heroId: number, locale?: string, callback?: string) {
+    let params : {locale: string, callback?: string} = {
+      locale: this.localeService.getLocale()
+    };
+    
+    battleTagValidator.validate(battleTag);
+    heroIdValidator.validate(heroId);
+    
+    let url = this.router.get('HeroProfile', [{
+      "battleTag": battleTag,
+      "id": heroId
+    }]);
     
     if (locale) {
       this.localeService.setLocale(locale);
