@@ -14,7 +14,7 @@ var routes : Array<RouteInterface> = [
       route: '/profile/:battleTag/'
     },
     {
-      name: 'Hero',
+      name: 'HeroProfile',
       route: '/profile/:battleTag/hero/:id'
     }
 ];
