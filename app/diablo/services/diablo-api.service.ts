@@ -48,27 +48,27 @@ export class DiabloApiService extends ApiService {
    * @return {Promise}
    */
   public getCareerProfile(battleTag: string, locale?: string, callback?: string) {
-    let params : {locale: string, callback?: string} = {
-      locale: this.localeService.getLocale()
-    };
-    
     battleTagValidator.validate(battleTag);
     
     let url = this.router.get('CareerProfile', [{"battleTag": battleTag}]);
     
-    if (locale) {
-      this.localeService.setLocale(locale);
-      params.locale = this.localeService.getLocale();
-    }
-    
-    return this.request(url, params, callback);
+    return this.request(url, locale, callback);
   }
   
+  /**
+   * Returns the hero profile
+   * 
+   * Based on the BattleTag, Hero ID and the region(ie. US) it returns the
+   * hero profile 
+   * 
+   * @param {String} battleTag Battle Tag in name-#### format (ie. Noob-1234)
+   * @param {Number} heroId The hero id of the hero to look up
+   * @param {String=} locale What locale to use in the response (ie. en_US)
+   * @param {String=} callback Request data to be returned as a JsonP callback
+   * 
+   * @return {Promise}
+   */
   public getHeroProfile(battleTag: string, heroId: number, locale?: string, callback?: string) {
-    let params : {locale: string, callback?: string} = {
-      locale: this.localeService.getLocale()
-    };
-    
     battleTagValidator.validate(battleTag);
     heroIdValidator.validate(heroId);
     
@@ -77,12 +77,7 @@ export class DiabloApiService extends ApiService {
       "id": heroId
     }]);
     
-    if (locale) {
-      this.localeService.setLocale(locale);
-      params.locale = this.localeService.getLocale();
-    }
-    
-    return this.request(url, params, callback);
+    return this.request(url, locale, callback);
   }
   
   /**
@@ -116,6 +111,18 @@ export class DiabloApiService extends ApiService {
     return ApiService.prototype.getJsonp.call(this, prepared.apiUrl, prepared.params);
   }
   
+  /**
+   * Prepare the URL and the params to be sent
+   * 
+   * Concat the URL with the region/country identifier, the base URL and the
+   * route path to follow.
+   * Merge the params to be sent with the api key.
+   * 
+   * @param {String} path Route path for the request
+   * @param {Object} params Params to be merge with apiKey
+   * 
+   * return {{params: Object, apiUrl: String}}
+   */
   protected prepareRequest(path: string, params: Object) : {params: any, apiUrl: string} {
     let defaultParams = {
       apikey: this.apikey
@@ -131,7 +138,23 @@ export class DiabloApiService extends ApiService {
     };
   }
   
-  private request(url: string, params: {callback?: string}, callback? : string) {
+  /**
+   * Sends a get or getJSONP request
+   * 
+   * Settup the locale and callback params, and if the callback is setted it
+   * will make a getJSONP request, if else a get request.
+   * 
+   * return {Promise}
+   */
+  private request(url: string, locale: string, callback? : string) {
+    if (locale) {
+      this.localeService.setLocale(locale);
+    }
+    
+    let params: {locale: string, callback?: string} = {
+      locale: this.localeService.getLocale()
+    };
+    
     if (callback) {
       params.callback = callback;
       return this.getJsonp(url, params);
