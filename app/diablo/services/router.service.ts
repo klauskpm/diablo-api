@@ -12,6 +12,10 @@ var routes : Array<RouteInterface> = [
     {
       name: 'CareerProfile',
       route: '/profile/:battleTag/'
+    },
+    {
+      name: 'Hero',
+      route: '/profile/:battleTag/hero/:id'
     }
 ];
 
