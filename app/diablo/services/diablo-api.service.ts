@@ -56,12 +56,7 @@ export class DiabloApiService extends ApiService {
       params.locale = this.localeService.getLocale();
     }
     
-    if (callback) {
-      params.callback = callback;
-      return this.getJsonp(url, params);
-    } else {
-      return this.get(url, params);
-    }
+    return this.request(url, params, callback);
   }
   
   /**
@@ -81,6 +76,14 @@ export class DiabloApiService extends ApiService {
     return ApiService.prototype.get.call(this, prepared.apiUrl, prepared.params);
   }
   
+  /**
+   * Sends a GET request expecting a JSONP data response
+   * 
+   * @param {String} path
+   * @param {Object} params
+   * 
+   * return {Promise}
+   */
   public getJsonp(path: string, params: Object) : Promise<any[]> {
     let prepared = this.prepareRequest(path, params);
     
@@ -100,5 +103,14 @@ export class DiabloApiService extends ApiService {
       params: params,
       apiUrl: apiUrl
     };
+  }
+  
+  private request(url: string, params: {callback?: string}, callback? : string) {
+    if (callback) {
+      params.callback = callback;
+      return this.getJsonp(url, params);
+    } else {
+      return this.get(url, params);
+    }
   }
 }
