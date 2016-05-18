@@ -6,8 +6,10 @@ export class HeroService {
   private heroSelectedSource = new Subject<Object>();
   
   public heroSelected$ = this.heroSelectedSource.asObservable();
+  public heroSelected : Object;
   
   selectHero(hero: Object) {
+    this.heroSelected = hero;
     this.heroSelectedSource.next(hero);
   }
 }
