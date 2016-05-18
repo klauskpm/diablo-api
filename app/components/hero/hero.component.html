@@ -1,8 +1,14 @@
 <div *ngIf="hero">
   <p>
     <b>Name:</b>
-    <button (click)="select()">
+    <button
+      (click)="select()">
       {{hero.name}}
     </button>
+    
+    <hero-data
+      *ngIf="heroService.heroSelected && heroService.heroSelected.id == hero.id"
+      [hero]="hero">
+    </hero-data>
   </p>
 </div>
