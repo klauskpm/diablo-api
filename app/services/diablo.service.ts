@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/subject';
 
 @Injectable()
-export class HeroService {
+export class DiabloService {
   private heroSelectedSource = new Subject<Object>();
   
   public heroSelected$ = this.heroSelectedSource.asObservable();
