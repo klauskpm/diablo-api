@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { HeroService } from './../../../services/hero.service';
+import { DiabloService } from './../../../services/diablo.service';
 
 @Component({
   selector: 'hero-data',
@@ -10,5 +10,5 @@ export class HeroDataComponent {
   @Input()
   public hero;
   
-  constructor(public heroService: HeroService) {}
+  constructor(public diabloService: DiabloService) {}
 }
